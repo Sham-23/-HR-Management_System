@@ -1,0 +1,60 @@
+﻿@model EmployeeManagementSystemCore.Models.Designation
+
+@{
+    ViewBag.Title = "EditDesignation";
+}
+@if (Convert.ToInt16((Session["role"]).ToString()) == 1 && ViewBag.EditDesigation == null)
+{
+    <h4 class="LeaveSummaryHeading">Edit Designation</h4>
+    <hr id="leaverequesthr" />
+
+    using (Html.BeginForm("UpdateDesignation", "Admin", Model))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal" id="leaveRequestDiv">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.DesignationId)
+
+            <div class="form-group my-5">
+                @* @Html.LabelFor(model => model.DesignationName, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-4">Designation Name</label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.DesignationName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DesignationName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+
+                <div class="col-md-offset-2 col-md-2" id="LeaveBtn">
+                    <input type="submit" id="createsubmit" value="Save" class="btn btn-default btn-primary" />
+
+                </div>
+                <div class="col-md-2 "  style="width: 10.55%" id="add-Desi-back-list">
+                    @Html.ActionLink("Back", "GetAllDesignation")
+                </div>
+            </div>
+
+
+
+        </div>
+    }
+
+
+
+}
+
+else if (ViewBag.EditDesigation != null)
+{
+    <div>
+        <p>
+            @ViewBag.EditDesigation
+        </p>
+    </div>
+}
+
+else
+{
+    <td> You are not Authorized </td>
+}

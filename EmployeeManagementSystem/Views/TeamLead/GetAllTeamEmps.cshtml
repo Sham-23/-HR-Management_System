@@ -1,0 +1,96 @@
+﻿@model EmployeeManagementSystemCore.ViewModels.TeamEmpDetailsViewModel
+@{
+    ViewBag.Title = "GetAllTeamEmps";
+
+    //var data = (IEnumerable<EmployeeManagementSystemCore.ViewModels.TeamEmpDetailsViewModel>)ViewData["teamEmps"];
+    //var data1 = (IEnumerable<EmployeeManagementSystemCore.ViewModels.TeamEmpDetailsViewModel>)ViewData["teamEmps1"];
+
+
+}
+
+@if(Convert.ToInt32((Session["role"]).ToString()) == 2 && ViewBag.GetAllTeamEmps == null)
+{
+
+
+
+
+   
+
+            <h2 class="TeamEmpData">Team Members</h2><hr id="teamdepemphr" />
+                <div id="main">
+                    @using (Html.BeginForm())
+                    {
+                    <p> Find by Name: @Html.TextBox("searchEmp") <input type="submit" value="Search" /></p>
+                    }
+
+                                <table id="GetAllEmpDetails"  >
+                                    <thead >
+                                        <tr>
+                                            @*<th>
+                                                    EmployeeId
+                                                </th>*@
+
+                                            <th>
+                                                Name
+                                            </th>
+
+                                            <th>
+                                                Email
+                                            </th>
+
+                                            <th>
+                                                Designation 
+                                            </th>
+
+                                            <th>
+                                                Project
+                                            </th>
+
+                                          @*  <th>
+                                                Status
+                                            </th>
+                            *@
+
+                                        </tr>
+                                    </thead>
+                                    <tbody >
+                                        @{
+                                           
+                                            
+                                                foreach (var item in Model.teamEmps)
+                                                {
+
+                                                    <tr  class="table-bordered ">
+                                                        @*<td> @item.EmployeeId </td>*@
+                                                        <td onclick="location.href='@Url.Action("GetTeamSpecificUserDetails", "TeamLead",new { employeeId = item.EmployeeId })'" class="col-md-3 Dep-team-lead-btn" >@item.FirstName  @item.LastName</td>
+
+                                                        @*<td> @item.FirstName @item.LastName</td>*@
+                                                        <td> @item.Email</td>
+                                                        <td> @item.DesignationName</td>
+                                                        <td> @item.ProjectName</td>
+                                                    </tr>
+
+                                                }
+
+                                            
+                                           
+
+                                        }
+                                    </tbody>
+                                </table>
+                </div>
+ }
+else if (ViewBag.RoleView != null)
+{
+    <div>
+        <p>
+            @ViewBag.RoleView
+        </p>
+    </div>
+}
+else
+{
+    <td> You are not Authorized </td>
+}
+
+

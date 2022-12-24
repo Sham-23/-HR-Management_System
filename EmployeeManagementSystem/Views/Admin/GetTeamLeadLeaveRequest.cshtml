@@ -1,0 +1,117 @@
+﻿
+@{
+    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if (((Session["role"]).ToString()) == "1" && ViewBag.GetTeamLeaveRequest == null)
+{
+    <h2 class="addEmp">Leave Request</h2>
+    <hr id="addemphr" />
+    <div id="GetAllEmpDetails">
+        <table class="EmpTableDet">
+            <thead>
+                <tr>
+                    <th>
+                        Leave Type
+                    </th>
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Half Day
+                    </th>
+
+
+                    <th>
+                        Length
+                    </th>
+
+                    <th>
+                        Start Date
+                    </th>
+                    <th>
+                        End Date
+                    </th>
+                    <th>
+                        Reason
+                    </th>
+                    @*<th>
+                        Status
+                    </th>*@
+                    <th>
+                        Actions
+                    </th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var item in Model.getTeamLeaveRequestViewModels)
+                    {
+                        if (item.Status == "Pending")
+                        {
+                            <tr>
+                                <td> @item.LeaveType</td>
+                                <td> @item.FirstName @item.LastName</td>
+                               
+                                  
+
+                                @if (@item.isHalfDay == true) {
+                                <td>
+                                    Yes
+                                </td>
+                                }
+                                else
+                                {
+                                <td>
+                                    No
+                                </td>
+
+                                }
+
+
+                                @if (item.LengthOfLeave == 0)
+                                {
+                                    <td> 0.5 </td>
+                                }
+                                else { <td> @item.LengthOfLeave</td> }
+                                
+                                <td> @item.StartDate.ToString("dd/MM/yyyy")</td>
+                                <td> @item.EndDate.ToString("dd/MM/yyyy") </td>
+                                <td> @item.Reason</td>
+                                @*<td> @item.Status</td>*@
+                                @if (item.Status == "Pending")
+                                {
+                                    <td>
+                                        <span>
+                                            <input value="Accept" onclick=" (confirm('Do you want to Accept Leave?')) ? window.location.href = '@Url.Action("LeaveAccept","TeamLead",item)' : null" id="emp-create-btn" class="btn-success" type="button" />
+                                            <input value="Reject" onclick=" (confirm('Do you want to Reject Leave?')) ?window.location.href='@Url.Action("LeaveReject","TeamLead",item)': null " id="emp-create-btn" class="btn-danger" type="button" />
+                                        </span>
+                                    </td>
+
+                                }
+
+
+
+                            </tr>
+
+                        }
+
+
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+}
+
+else
+{
+    <td> You are not Authorized </td>
+}

@@ -1,0 +1,56 @@
+﻿@model EmployeeManagementSystemCore.ViewModels.LeaveViewModel
+@{
+    ViewBag.Title = "LeaveSummary";
+
+
+    var data = (IEnumerable<EmployeeManagementSystemCore.Models.Leave>)ViewData["getleaves"];
+}
+@if (ViewBag.LeaveSummary == null)
+{
+    <h2 class="LeaveSummaryHeading">Leave Summary</h2>
+    <hr id="teamdepemphr" />
+    <div id="leavetable">
+        <table class="leaveTab">
+            @{
+                foreach (var item in Model.getleaves)
+                {
+                    <tr class="leaveTableRow">
+                        <th class="leaveTableHeading">Leave Accured</th>
+                        <td> @item.LeavesAccrued </td>
+                    </tr>
+                    
+                    <tr class="leaveTableRow">
+                        <th class="leaveTableHeading"> Balance Leaves</th>
+                        <td> @(item.BalanceLeaves-(item.HalfDay*0.5))</td>
+                    </tr>
+                    
+                   <tr class="leaveTableRow">
+                       <th class="leaveTableHeading">Leave Taken</th>
+                       <td>@(item.LeavesTaken +(item.HalfDay * 0.5))</td>
+                   </tr>
+
+                    <tr class="leaveTableRow">
+                        <th class="leaveTableHeading">Leave Without Pay</th>
+                        <td> @((item.LeavesTaken+item.BalanceLeaves) - 15)</td>
+                    </tr>
+
+
+                }
+            }
+
+        </table>
+        
+    </div>
+    
+
+}
+
+
+else if (ViewBag.LeaveSummary != null)
+{
+    <div>
+        <p>
+            @ViewBag.LeaveSummary
+        </p>
+    </div>
+}

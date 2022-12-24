@@ -1,0 +1,206 @@
+﻿
+
+@model EmployeeManagementSystemCore.Models.LeaveRequest
+
+@{
+    ViewBag.Title = "LeaveRequest";
+}
+
+@using (Html.BeginForm("SaveLeaveRequest", "Employee", Model))
+{
+    @Html.AntiForgeryToken()
+    <h4 class="LeaveRequestHeading">Leave Request</h4>
+    <hr id="leaverequesthr" />
+
+    <div class="form-horizontal" id="leaveRequestDiv">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group col-md-12">
+            <label class="control-label col-md-4">Half Day?</label>
+            <div class="col-md-6">
+                <div>
+                    @Html.CheckBoxFor(model => model.IsHalfday, new { @class = "ishalfday", type = "checkbox", onchange = "lencheck()" })
+                    @Html.ValidationMessageFor(model => model.IsHalfday, "", new { @class = "text-danger " })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-md-12">
+            <label class="control-label col-md-4">Leave Type</label>
+            <div class="col-md-6">
+                @Html.DropDownList("LeaveType", new List<SelectListItem>
+                {
+                    //new SelectListItem { Text = "Select Option", Selected=true},
+                    new SelectListItem { Text = "Sick Leave ", Value = "Sick Leave "},
+                    new SelectListItem { Text = "Casual Leave", Value ="Casual Leave" },
+
+                }, htmlAttributes: new { @class = "text-left Role-Down select-Leave", required = "required" })
+                @Html.ValidationMessageFor(model => model.LeaveType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group col-md-12">
+            <label class="control-label col-md-4">Start Date</label>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.StartDate, new
+           {
+               htmlAttributes = new
+               {
+                   @class = " startdate form-control",
+                   type = "date",
+                   required = "required",
+                   oninvalid = "InvalidMsgStartDate(this);",
+                   min = DateTime.Now.ToString("yyyy-MM-dd"),
+                   max = DateTime.Now.AddDays(90).ToString("yyyy-MM-dd"),
+                        onchange = "enddatemin()"
+               }
+           })
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+        <div class="form-group col-md-12">
+            <label class="control-label col-md-4">End Date</label>
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.EndDate, new
+                {
+                    htmlAttributes = new
+                    {
+                        @class = "form-control enddate",
+                        type = "date",
+                        required = "required"
+               ,
+               oninvalid = "InvalidMsgEndDate(this);",
+
+                        min = DateTime.Now.ToString("yyyy-MM-dd"),
+               max = DateTime.Now.AddDays(90).ToString("yyyy-MM-dd"),
+                        onchange = "lencheck()"
+                    }
+                })
+
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-12">
+            <label class="control-label col-md-4">Reason</label>
+            <div class="col-md-6">
+
+                @Html.TextAreaFor(model => model.Reason, new
+           {
+               htmlAttributes = new
+               {
+                   @class = "form-control",
+                   id = "reason",
+                   required = "required",
+                   oninvalid = "InvalidMsg(this);"
+
+               },
+               required = "required",
+               @style = "width:100%;min-height:50px;max-height: 100px;"
+           })
+
+                @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+
+            <div class="col-md-offset-2 col-md-2" id="LeaveBtn">
+                <input type="submit" id="createsubmit" value="Create" class="btn btn-default btn-primary" />
+            </div>
+            <div class="col-md-2 " id="Emp-form-back-list">
+                @Html.ActionLink("Back", "getUserOwnDetails", "Employee")
+            </div>
+        </div>
+    </div>
+}
+
+
+<script type="text/javascript">
+
+    //function buttonState() {
+    //    $("input").each(function () {
+    //        $('#createsubmit').attr('disabled', 'disabled');
+    //        if ($(this).val() == "") return false;
+    //        $('#createsubmit').attr('disabled', '');
+    //    })
+    //}
+
+    //$(function () {
+    //    $('#createsubmit').attr('disabled', 'disabled');
+    //    $('input').change(buttonState);
+    //})
+
+    $(".select-add-placeholder").prepend("<option value='' disabled selected>Select Leave Type...</option>");
+
+    function InvalidMsg(textbox) {
+
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Please Enter the Reason!');
+        }
+        else {
+            textbox.setCustomValidity('');
+        }
+
+        return true;
+    }
+    function InvalidMsgStartDate(textbox) {
+
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Please Enter the Start Date!');
+        }
+
+        else {
+            textbox.setCustomValidity('');
+        }
+
+        return true;
+    }
+    function InvalidMsgEndDate(textbox) {
+
+        if (textbox.value === '') {
+            textbox.setCustomValidity
+                ('Please Enter the End Date!');
+        }
+        else {
+            textbox.setCustomValidity('');
+        }
+
+        return true;
+    }
+
+    function lencheck() {
+
+        var lenofleave = document.querySelector(".ishalfday");
+        console.log(lenofleave.checked);
+        if (lenofleave.checked) {
+            console.log(lenofleave.translate);
+            document.querySelector(".enddate").disabled = true;
+
+        }
+        else {
+            document.querySelector(".enddate").disabled = false;
+            console.log(lenofleave.translate);
+
+        }
+    }
+    function enddatemin() {
+        var startdate = document.querySelector(".startdate").value;
+        console.log(startdate);
+        var dt = new Date(startdate);
+        document.querySelector(".enddate").min = startdate.setDate(startdate + 1);
+        var enddate = (document.querySelector(".enddate").min = dt.setDate(dt + 1));
+        console.log(document.querySelector(".enddate").min = dt.toLocaleDateString("yyyy-MM-d"));
+        
+
+    }
+    $(".select-Leave").prepend("<option value='' disabled selected>Select Leave Type...</option>");
+</script>

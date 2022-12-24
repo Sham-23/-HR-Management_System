@@ -1,0 +1,93 @@
+﻿@model EmployeeManagementSystemCore.ViewModels.AddNewEmployeeViewModel
+
+@{
+    ViewBag.Title = "Login Page";
+
+    var EmpCode = (EmployeeManagementSystemCore.Models.Employee)ViewData["EmpCodeOption"];
+
+    var EmpCodeOption = new List<SelectListItem>();
+    foreach (var item in EmpCode.EmployeeList)
+    {
+        EmpCodeOption.Add(new SelectListItem() { Text = item.FirstName, Value = item.EmployeeId.ToString() });
+    }
+
+
+}
+
+@if (Convert.ToInt16((Session["role"]).ToString()) == 1 && ViewBag.AddLogin == null)
+{
+
+    using (Html.BeginForm("SaveEmployee", "Admin", Model))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal mx-auto align-center ">
+            <h4 class="addEmp">Add New Login</h4>
+            <hr id="addloginpr" />
+@*            @Html.ValidationSummary(true, "", new { @class = "text-danger " })
+*@
+        <div class=" mx-auto align-center px-3" id="add-emp-login-div">
+           @* <div class="form-group mt-3 ">
+                @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new { @class = "control-label col-md-4" })
+                <label class="control-label col-md-4">employee name</label>
+                <div class="col-md-5">
+                    @Html.DropDownListFor(model => model.EmployeeId, EmpCodeOption, htmlAttributes: new { @class = "text-center role-down " })
+                    @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+            <div class="form-group my-4 ">
+                @*@Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-4" })*@
+                <label class="control-label col-md-4">User Name</label>
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control login-form", placeholder = " Email form ", @autocomplete = "off",required="required",pattern= "^\\S+@\\S+\\.\\S+$" } })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group ">
+                @*@Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-4" })*@
+                <label class="control-label col-md-4">Password</label>
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control login-form", placeholder = "Eg.Abcd@123,abcD1@4567,8-12 chars", type = "password",
+                   @autocomplete = "off",required="required",pattern= "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", @minlength = 8,
+                   @maxlength = 15
+               } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+
+                <div class="col-md-offset-2 col-md-2" id="LeaveBtn">
+                    <input type="submit" id="createsubmit" value="Add" class="btn btn-default btn-primary" />
+
+                </div>
+                <div class="col-md-2 " id="add-Desi-back-list" style="width:10.33%">
+                    @Html.ActionLink("Back", "Department")
+                </div>
+            </div>
+
+
+        </div>
+           
+
+        </div>
+
+    }
+}
+else if (ViewBag.AddLogin != null)
+{
+    <div>
+        <p>
+            @ViewBag.AddLogin
+        </p>
+    </div>
+}
+else
+{
+    <td> You are not Authorized </td>
+}
+
+
+
+

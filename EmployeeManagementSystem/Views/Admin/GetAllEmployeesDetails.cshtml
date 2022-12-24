@@ -1,0 +1,20 @@
+﻿@model EmployeeManagementSystemCore.ViewModels.AdminViewModelList
+@{
+    ViewBag.Title = "GetAllEmployeesDetails";
+
+
+    //var model1 = (IEnumerable<EmployeeManagementSystem.Models.Employee>)Viewmodel["allEmployees1"];
+    var data = Session["role"];
+
+    <script>
+        $(function () {
+            $('[model-toggle="tooltip"]').tooltip()
+        })
+
+
+
+    </script>
+}
+@Html.Partial("_GetAllEmployeeDetails", Model);
+
+

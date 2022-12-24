@@ -1,0 +1,104 @@
+﻿@model EmployeeManagementSystemCore.ViewModels.TeamEmpDetailsViewModel
+
+
+@{
+    ViewBag.Title = "Team Members";
+
+    //var data = (IEnumerable<EmployeeManagementSystemCore.ViewModels.TeamEmpDetailsViewModel>)ViewData["teamEmps"];
+
+    var projectid = Convert.ToInt32(ViewData["projectId"]);
+}
+
+@if (Convert.ToInt16((Session["role"]).ToString()) == 1 && ViewBag.GetAllTeamEmpsAdmin == null)
+{
+    <h2 class="TeamEmpData">Team Members</h2>
+    <hr id="teamdepemphr" />
+    <div class="dept-btn">
+
+        <div class="dept-btn-sec">
+            <a href="@Url.Action("AddProjectMembers" , "Admin", new {ProjectId=projectid })">
+                <span class="fa fa-solid fa-user-plus"></span>
+                Add Project Members
+            </a>
+        </div>
+
+    </div>
+    <div id="main">
+        <table id="GetAllEmpDetails">
+            <thead>
+                <tr>
+
+
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Email
+                    </th>
+
+                    <th>
+                        Designation
+                    </th>
+
+                    <th>
+                        Project Name
+                    </th>
+
+                    <th>
+                        Actions
+                    </th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var item in Model.teamEmps)
+                    {
+
+                        <tr>
+
+                            <td> @item.FirstName @item.LastName</td>
+                            <td> @item.Email</td>
+                            <td> @item.DesignationName</td>
+                            <td> @item.ProjectName</td>
+                            <td class="col-md-2">
+                                <span>
+@*                                    <button onclick="location.href='@Url.Action("EditEmp", "Admin", item)'" id="emp-create-btn" class="btn-primary btn-sm mx-2 my-1" type="button" model-toggle="tooltip" model-placement="top" title="Edit Details"><i class="fa fa-solid fa-pen mx-1"></i></button>
+*@                                     <button onclick="(confirm('do you want to Remove Employee?')) ? location.href='@Url.Action("RemoveEmployee", "Admin", item)' : null;" id="emp-create-btn" class="bg-warning text-dark btn-sm mx-2" type="button" model-toggle="tooltip" model-placement="top" title="Remove Employee"><i class="fa fa-regular fa-user-slash mx-1"></i></button>
+
+
+
+                                </span>
+                            </td>
+
+                        </tr>
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="form-group col-md-6 my-2" style="margin-left:45%;">
+        <div class="col-md-2 " id="Emp-form-back-list">
+            @Html.ActionLink("Back", "Department")
+        </div>
+    </div>
+
+}
+else if (ViewBag.GetAllTeamEmpsAdmin != null)
+{
+    <div>
+        <p>
+            @ViewBag.GetAllTeamEmpsAdmin
+        </p>
+    </div>
+}
+else
+{
+    <td> You are not Authorized </td>
+}
+
+
+
